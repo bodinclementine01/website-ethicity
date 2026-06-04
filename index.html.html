@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethicity — Règles du Jeu</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a0a00;
+  --paper: #f5ead6;
+  --paper-dark: #ede0c4;
+  --paper-light: #faf4e8;
+  --red: #8b1a1a;
+  --gold: #b8860b;
+  --brown: #5c3317;
+  --muted: #7a5c3a;
+  --eco-color: #d4a017;
+  --env-color: #2d6a2d;
+  --soc-color: #8b1a1a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Lora', serif;
+  line-height: 1.7;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(139,26,26,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(184,134,11,0.04) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='%238b1a1a' stroke-width='0.15' opacity='0.12'/%3E%3C/svg%3E");
+  min-height: 100vh;
+}
+
+/* ── LANG SWITCHER ── */
+.lang-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--paper-dark);
+  border-bottom: 1px solid rgba(139,26,26,0.2);
+}
+.lang-bar-label {
+  font-size: 10px;
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-right: 4px;
+  text-transform: uppercase;
+}
+.lang-btn {
+  font-size: 11.5px;
+  font-family: 'Cinzel Decorative', serif;
+  padding: 4px 14px;
+  border: 1px solid rgba(139,26,26,0.35);
+  background: transparent;
+  color: var(--brown);
+  cursor: pointer;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+.lang-btn:hover { background: rgba(139,26,26,0.07); color: var(--red); }
+.lang-btn.active { background: var(--red); color: var(--paper); border-color: var(--red); }
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 3.5rem 2rem 2.5rem;
+  position: relative;
+  border-bottom: 2px solid var(--red);
+  background: linear-gradient(180deg, rgba(139,26,26,0.06) 0%, transparent 100%);
+}
+header::before, header::after {
+  content: '';
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: min(700px, 90%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+header::before { top: 1.2rem; }
+header::after { bottom: 1.2rem; }
+.header-ornament { font-size: 1.6rem; color: var(--red); letter-spacing: 0.8rem; margin-bottom: 0.4rem; opacity: 0.6; }
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  color: var(--red);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-shadow: 2px 2px 0 rgba(184,134,11,0.2);
+}
+.subtitle { font-family: 'IM Fell English', serif; font-style: italic; color: var(--muted); font-size: 1.05rem; margin-top: 0.4rem; }
+.tagline { margin-top: 0.9rem; font-size: 0.95rem; color: var(--brown); font-style: italic; }
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 1rem 1rem;
+  background: var(--paper-dark);
+  border-bottom: 1px solid rgba(139,26,26,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav a {
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--brown);
+  padding: 0.3rem 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+nav a:hover { border-color: var(--red); color: var(--red); background: rgba(139,26,26,0.05); }
+
+/* ── LAYOUT ── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 2.8rem 0 2.2rem; border-bottom: 1px solid rgba(139,26,26,0.2); }
+.section-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; }
+.section-num { font-family: 'Cinzel Decorative', serif; font-size: 2.2rem; color: var(--red); opacity: 0.22; line-height: 1; min-width: 2.8rem; }
+h2 { font-family: 'Cinzel Decorative', serif; font-size: clamp(1rem, 3vw, 1.4rem); color: var(--red); letter-spacing: 0.05em; }
+h2::after { content: ''; display: block; width: 2.5rem; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-top: 0.35rem; }
+h3 { font-family: 'IM Fell English', serif; font-size: 1.05rem; color: var(--brown); margin: 1.4rem 0 0.5rem; }
+p { margin-bottom: 0.75rem; color: var(--ink); font-size: 0.93rem; }
+.divider { text-align: center; color: var(--red); opacity: 0.4; font-size: 1.1rem; letter-spacing: 0.6rem; margin: 1.5rem 0; }
+
+/* ── BOXES ── */
+.box {
+  background: var(--paper-light);
+  border: 1px solid rgba(139,26,26,0.25);
+  border-left: 4px solid var(--red);
+  padding: 0.9rem 1.15rem;
+  margin: 0.9rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.box-title { font-family: 'Cinzel Decorative', serif; font-size: 0.68rem; color: var(--red); letter-spacing: 0.1em; margin-bottom: 0.4rem; text-transform: uppercase; }
+.box-gold { border-left-color: var(--gold); background: rgba(212,160,23,0.04); }
+.box-gold .box-title { color: var(--gold); }
+
+/* ── SDG BADGES ── */
+.sdg-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0; }
+.sdg-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--paper-light);
+  border: 1px solid rgba(139,26,26,0.2);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+}
+.sdg-num { font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; color: var(--red); line-height: 1; }
+.sdg-label { color: var(--brown); font-size: 0.78rem; }
+
+/* ── JAUGES ── */
+.jauges-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.jauge-card { background: var(--paper-light); border: 1px solid rgba(139,26,26,0.2); padding: 1.1rem; text-align: center; position: relative; overflow: hidden; }
+.jauge-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.jauge-card.eco::before { background: var(--eco-color); }
+.jauge-card.env::before { background: var(--env-color); }
+.jauge-card.soc::before { background: var(--soc-color); }
+.jauge-card.dur::before { background: linear-gradient(90deg, var(--eco-color), var(--env-color), var(--soc-color)); }
+.jauge-icon { font-size: 1.7rem; margin-bottom: 0.35rem; }
+.jauge-name { font-family: 'Cinzel Decorative', serif; font-size: 0.72rem; letter-spacing: 0.07em; margin-bottom: 0.25rem; }
+.jauge-card.eco .jauge-name { color: var(--eco-color); }
+.jauge-card.env .jauge-name { color: var(--env-color); }
+.jauge-card.soc .jauge-name { color: var(--soc-color); }
+.jauge-card.dur .jauge-name { color: var(--brown); }
+.jauge-sub { font-size: 0.77rem; color: var(--muted); font-style: italic; }
+
+/* ── PIECES ── */
+.pieces-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.65rem; margin: 1.4rem 0; }
+.piece-card { display: flex; align-items: center; gap: 0.8rem; background: var(--paper-light); border: 1px solid rgba(139,26,26,0.18); padding: 0.7rem 0.9rem; }
+.piece-dot { width: 32px; height: 32px; border-radius: 50% 50% 0 0; flex-shrink: 0; border: 1.5px solid rgba(0,0,0,0.12); }
+.piece-label { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.piece-sym { font-size: 0.72rem; color: var(--muted); }
+.piece-arrow { font-size: 0.72rem; color: var(--muted); margin-left: auto; padding-left: 0.4rem; white-space: nowrap; }
+
+/* ── PAIRES TABLE ── */
+.paires-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 1.4rem 0; }
+.paires-table th { background: var(--red); color: #f5ead6; font-family: 'Cinzel Decorative', serif; font-size: 0.65rem; letter-spacing: 0.07em; padding: 0.6rem 0.75rem; text-align: left; }
+.paires-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid rgba(139,26,26,0.12); vertical-align: middle; }
+.paires-table tr:nth-child(even) td { background: rgba(139,26,26,0.03); }
+.pole-name { font-family: 'IM Fell English', serif; font-weight: 600; color: var(--brown); }
+.zone-badge { display: inline-block; font-size: 0.68rem; padding: 1px 7px; border-radius: 2px; font-family: 'Cinzel Decorative', serif; }
+.z-eco { background: rgba(212,160,23,0.15); color: var(--gold); }
+.z-env { background: rgba(45,106,45,0.12); color: var(--env-color); }
+.z-soc { background: rgba(139,26,26,0.1); color: var(--red); }
+.z-mix { background: rgba(92,51,23,0.1); color: var(--brown); }
+.val-pos { color: var(--env-color); font-weight: 600; }
+.val-neg { color: var(--red); font-weight: 600; }
+.val-neu { color: var(--muted); }
+
+/* ── PHASES ── */
+.phases { display: flex; margin: 1.4rem 0; flex-wrap: wrap; }
+.phase { flex: 1; min-width: 120px; padding: 0.9rem; text-align: center; background: var(--paper-light); border: 1px solid rgba(139,26,26,0.15); border-right: none; position: relative; }
+.phase:last-child { border-right: 1px solid rgba(139,26,26,0.15); }
+.phase::after { content: '›'; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 1.3rem; z-index: 2; background: var(--paper-light); line-height: 1; }
+.phase:last-child::after { display: none; }
+.phase-num { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; color: var(--red); opacity: 0.2; }
+.phase-title { font-family: 'IM Fell English', serif; font-size: 0.88rem; color: var(--brown); font-weight: 600; margin: 0.15rem 0; }
+.phase-sub { font-size: 0.7rem; color: var(--muted); }
+
+/* ── ACTIONS ── */
+.actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.7rem; margin: 1.4rem 0; }
+.action-card { background: var(--paper-light); border: 1px solid rgba(139,26,26,0.2); padding: 0.9rem; position: relative; }
+.action-num { font-family: 'Cinzel Decorative', serif; font-size: 1.2rem; color: var(--red); opacity: 0.18; position: absolute; top: 0.4rem; right: 0.7rem; }
+.action-title { font-family: 'IM Fell English', serif; font-size: 0.95rem; color: var(--brown); font-weight: 600; margin-bottom: 0.25rem; }
+.action-desc { font-size: 0.78rem; color: var(--muted); }
+
+/* ── EVENTS ── */
+.evt-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 0.9rem; margin: 1.3rem 0; }
+.evt-card { background: var(--paper-light); border: 1px solid rgba(139,26,26,0.2); position: relative; overflow: hidden; }
+.evt-card::after { content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 20px 20px 0; border-color: transparent var(--paper-dark) transparent transparent; }
+.evt-card-header { padding: 0.75rem 0.9rem 0.55rem; border-bottom: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center; gap: 0.55rem; }
+.evt-num { font-family: 'Cinzel Decorative', serif; font-size: 0.95rem; color: var(--red); opacity: 0.4; min-width: 1.3rem; }
+.evt-title { font-family: 'IM Fell English', serif; font-size: 0.92rem; color: var(--brown); font-weight: 600; }
+.evt-card-body { padding: 0.65rem 0.9rem 0.8rem; }
+.evt-desc { font-size: 0.76rem; color: var(--muted); font-style: italic; margin-bottom: 0.55rem; line-height: 1.45; }
+.evt-effects { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+.eff { display: flex; align-items: center; gap: 3px; font-size: 0.76rem; font-weight: 600; padding: 2px 7px; border-radius: 2px; }
+.eff-eco { background: rgba(212,160,23,0.12); color: var(--gold); }
+.eff-env { background: rgba(45,106,45,0.1); color: var(--env-color); }
+.eff-soc { background: rgba(139,26,26,0.1); color: var(--red); }
+
+/* ── VICTOIRE ── */
+.win-box { background: linear-gradient(135deg, rgba(139,26,26,0.06), rgba(184,134,11,0.06)); border: 2px solid var(--gold); padding: 1.4rem; text-align: center; position: relative; margin: 1.4rem 0; }
+.win-formula { font-family: 'Cinzel Decorative', serif; font-size: 0.95rem; color: var(--brown); letter-spacing: 0.05em; margin: 0.65rem 0 0.25rem; }
+.win-formula span { display: inline-block; padding: 0.15rem 0.55rem; margin: 0 0.1rem; border-radius: 2px; }
+.win-formula .eco { background: rgba(212,160,23,0.15); color: var(--gold); }
+.win-formula .env { background: rgba(45,106,45,0.12); color: var(--env-color); }
+.win-formula .soc { background: rgba(139,26,26,0.1); color: var(--red); }
+.win-note { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-top: 0.45rem; }
+
+/* ── FOOTER ── */
+footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.78rem; border-top: 2px solid var(--red); background: rgba(139,26,26,0.03); font-style: italic; }
+footer .footer-title { font-family: 'Cinzel Decorative', serif; color: var(--red); font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 0.25rem; font-style: normal; }
+
+@media (max-width: 600px) {
+  .phases { flex-direction: column; }
+  .phase { border-right: 1px solid rgba(139,26,26,0.15); border-bottom: none; }
+  .phase:last-child { border-bottom: 1px solid rgba(139,26,26,0.15); }
+  .phase::after { right: 50%; bottom: -9px; top: auto; transform: translateX(50%) rotate(90deg); }
+}
+
+/* ── i18n : hide all lang elements by default ── */
+[data-lang] { display: none !important; }
+
+/* Français */
+.lang-fr span[data-lang="fr"]  { display: inline !important; }
+.lang-fr p[data-lang="fr"]     { display: block !important; }
+.lang-fr div[data-lang="fr"]   { display: block !important; }
+.lang-fr td[data-lang="fr"]    { display: table-cell !important; }
+.lang-fr li[data-lang="fr"]    { display: list-item !important; }
+.lang-fr a[data-lang="fr"]     { display: inline !important; }
+
+/* English */
+.lang-en span[data-lang="en"]  { display: inline !important; }
+.lang-en p[data-lang="en"]     { display: block !important; }
+.lang-en div[data-lang="en"]   { display: block !important; }
+.lang-en td[data-lang="en"]    { display: table-cell !important; }
+.lang-en li[data-lang="en"]    { display: list-item !important; }
+.lang-en a[data-lang="en"]     { display: inline !important; }
+
+/* 中文 */
+.lang-zh span[data-lang="zh"]  { display: inline !important; }
+.lang-zh p[data-lang="zh"]     { display: block !important; }
+.lang-zh div[data-lang="zh"]   { display: block !important; }
+.lang-zh td[data-lang="zh"]    { display: table-cell !important; }
+.lang-zh li[data-lang="zh"]    { display: list-item !important; }
+.lang-zh a[data-lang="zh"]     { display: inline !important; }
+</style>
+</head>
+<body class="lang-fr">
+
+<!-- LANG SWITCHER -->
+<div class="lang-bar">
+  <span class="lang-bar-label">Langue</span>
+  <button class="lang-btn active" onclick="setLang('fr')">Français</button>
+  <button class="lang-btn" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('zh')">中文</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-ornament">✦ ✦ ✦</div>
+  <h1>Ethicity</h1>
+  <p class="subtitle">Sustainable Environments through City Development</p>
+  <p class="tagline">
+    <span data-lang="fr">« Une ville durable ne se construit pas, elle se soigne. »</span>
+    <span data-lang="en">« A sustainable city is not built — it is healed. »</span>
+    <span data-lang="zh">「可持续的城市不是建造出来的，而是治愈出来的。」</span>
+  </p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#concept"><span data-lang="fr">Concept</span><span data-lang="en">Concept</span><span data-lang="zh">概念</span></a>
+  <a href="#jauges"><span data-lang="fr">Jauges</span><span data-lang="en">Gauges</span><span data-lang="zh">仪表</span></a>
+  <a href="#pieces"><span data-lang="fr">Pièces</span><span data-lang="en">Pieces</span><span data-lang="zh">棋子</span></a>
+  <a href="#paires"><span data-lang="fr">Paires</span><span data-lang="en">Pairs</span><span data-lang="zh">组合</span></a>
+  <a href="#deroulement"><span data-lang="fr">Déroulement</span><span data-lang="en">Gameplay</span><span data-lang="zh">游戏流程</span></a>
+  <a href="#actions"><span data-lang="fr">Actions</span><span data-lang="en">Actions</span><span data-lang="zh">行动</span></a>
+  <a href="#evenements"><span data-lang="fr">Événements</span><span data-lang="en">Events</span><span data-lang="zh">事件</span></a>
+  <a href="#victoire"><span data-lang="fr">Victoire</span><span data-lang="en">Victory</span><span data-lang="zh">胜利</span></a>
+</nav>
+
+<!-- ── CONCEPT ── -->
+<section id="concept">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">一</div>
+      <h2><span data-lang="fr">Concept du Jeu</span><span data-lang="en">Game Concept</span><span data-lang="zh">游戏概念</span></h2>
+    </div>
+
+    <p data-lang="fr">Ethicity est un jeu de plateau coopératif et physique intégrant des capteurs IoT. Les joueurs construisent ensemble une ville durable en plaçant des blocs sur un plateau circulaire, en équilibrant trois piliers essentiels : l'économie, l'environnement et le social.</p>
+    <p data-lang="en">Ethicity is a cooperative physical board game using IoT sensors. Players work together to build a sustainable city by placing blocks on a circular board, balancing three essential pillars: economy, environment, and social well-being.</p>
+    <p data-lang="zh">Ethicity 是一款融合物联网传感器的合作式实体桌游。玩家共同在圆形棋盘上放置积木，建造可持续城市，平衡三大核心支柱：经济、环境与社会。</p>
+
+    <p data-lang="fr">Le jeu s'adresse aux familles, amis et institutions souhaitant explorer les enjeux du développement durable de manière ludique et sensorielle.</p>
+    <p data-lang="en">The game is designed for families, friends, and institutions wishing to explore sustainable development challenges in a playful and sensory way.</p>
+    <p data-lang="zh">本游戏面向家庭、朋友和机构，以互动有趣的方式探索可持续发展的挑战。</p>
+
+    <div class="divider">— ✦ —</div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:0.65rem; margin-top:0.8rem;">
+      <div class="box">
+        <div class="box-title"><span data-lang="fr">Joueurs</span><span data-lang="en">Players</span><span data-lang="zh">玩家</span></div>
+        <span data-lang="fr">2 à 4 joueurs · Dès 6 ans</span>
+        <span data-lang="en">2 to 4 players · Ages 6+</span>
+        <span data-lang="zh">2 至 4 名玩家 · 6 岁以上</span>
+      </div>
+      <div class="box">
+        <div class="box-title"><span data-lang="fr">Durée</span><span data-lang="en">Duration</span><span data-lang="zh">时长</span></div>
+        <span data-lang="fr">12 tours</span>
+        <span data-lang="en">12 rounds</span>
+        <span data-lang="zh">12 回合</span>
+      </div>
+      <div class="box">
+        <div class="box-title"><span data-lang="fr">Objectif</span><span data-lang="en">Objective</span><span data-lang="zh">目标</span></div>
+        <span data-lang="fr">Construire une ville durable en maintenant les trois jauges en vie</span>
+        <span data-lang="en">Build a sustainable city while keeping all three gauges alive</span>
+        <span data-lang="zh">建造可持续城市，同时维持三项指标不归零</span>
+      </div>
+    </div>
+
+    <h3><span data-lang="fr">Objectifs de Développement Durable</span><span data-lang="en">Sustainable Development Goals</span><span data-lang="zh">可持续发展目标</span></h3>
+    <div class="sdg-row">
+      <div class="sdg-badge">
+        <div class="sdg-num">11</div>
+        <div class="sdg-label"><span data-lang="fr">Villes et communautés durables</span><span data-lang="en">Sustainable cities &amp; communities</span><span data-lang="zh">可持续城市与社区</span></div>
+      </div>
+      <div class="sdg-badge">
+        <div class="sdg-num">12</div>
+        <div class="sdg-label"><span data-lang="fr">Consommation et production responsables</span><span data-lang="en">Responsible consumption &amp; production</span><span data-lang="zh">负责任的消费与生产</span></div>
+      </div>
+      <div class="sdg-badge">
+        <div class="sdg-num">17</div>
+        <div class="sdg-label"><span data-lang="fr">Partenariats pour les objectifs</span><span data-lang="en">Partnerships for the goals</span><span data-lang="zh">促进目标实现的伙伴关系</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── JAUGES ── -->
+<section id="jauges">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">二</div>
+      <h2><span data-lang="fr">Système de Jauges</span><span data-lang="en">Gauge System</span><span data-lang="zh">仪表系统</span></h2>
+    </div>
+
+    <p data-lang="fr">La performance de la ville est mesurée par quatre jauges interconnectées, allant de <strong>0 à 6</strong>.</p>
+    <p data-lang="en">The city's performance is measured by four interconnected gauges, ranging from <strong>0 to 6</strong>.</p>
+    <p data-lang="zh">城市表现由四个相互关联的仪表衡量，范围从 <strong>0 到 6</strong>。</p>
+
+    <div class="jauges-grid">
+      <div class="jauge-card dur">
+        <div class="jauge-icon">⚖️</div>
+        <div class="jauge-name"><span data-lang="fr">Durabilité</span><span data-lang="en">Sustainability</span><span data-lang="zh">可持续性</span></div>
+        <div class="jauge-sub"><span data-lang="fr">Jauge principale<br>D = 2 × ³√(Éco × Env × Soc)</span><span data-lang="en">Main gauge<br>D = 2 × ³√(Eco × Env × Soc)</span><span data-lang="zh">主仪表<br>D = 2 × ³√(经 × 环 × 社)</span></div>
+      </div>
+      <div class="jauge-card eco">
+        <div class="jauge-icon">💰</div>
+        <div class="jauge-name"><span data-lang="fr">Économie</span><span data-lang="en">Economy</span><span data-lang="zh">经济</span></div>
+        <div class="jauge-sub"><span data-lang="fr">Éco — Production &amp; ressources</span><span data-lang="en">Eco — Production &amp; resources</span><span data-lang="zh">经 — 生产与资源</span></div>
+      </div>
+      <div class="jauge-card env">
+        <div class="jauge-icon">🌿</div>
+        <div class="jauge-name"><span data-lang="fr">Environnement</span><span data-lang="en">Environment</span><span data-lang="zh">环境</span></div>
+        <div class="jauge-sub"><span data-lang="fr">Env — Nature &amp; eau</span><span data-lang="en">Env — Nature &amp; water</span><span data-lang="zh">环 — 自然与水资源</span></div>
+      </div>
+      <div class="jauge-card soc">
+        <div class="jauge-icon">👥</div>
+        <div class="jauge-name"><span data-lang="fr">Social</span><span data-lang="en">Social</span><span data-lang="zh">社会</span></div>
+        <div class="jauge-sub"><span data-lang="fr">Soc — Bonheur &amp; lien humain</span><span data-lang="en">Soc — Happiness &amp; human connection</span><span data-lang="zh">社 — 幸福与人际联系</span></div>
+      </div>
+    </div>
+
+    <div class="box box-gold">
+      <div class="box-title"><span data-lang="fr">Phase Chronos — Baisse naturelle</span><span data-lang="en">Chronos Phase — Natural decay</span><span data-lang="zh">Chronos 阶段 — 自然衰减</span></div>
+      <p data-lang="fr" style="margin:0">À chaque tour, la jauge la plus haute perd −1 point (consommation naturelle de la ville). En cas d'égalité entre plusieurs jauges, le tirage est aléatoire.</p>
+      <p data-lang="en" style="margin:0">Each turn, the highest gauge loses −1 point (natural city consumption). If multiple gauges are tied, the choice is random.</p>
+      <p data-lang="zh" style="margin:0">每回合，最高的仪表减少 −1 点（城市自然消耗）。如有并列，随机选择。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PIECES ── -->
+<section id="pieces">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">三</div>
+      <h2><span data-lang="fr">Les Pièces</span><span data-lang="en">The Pieces</span><span data-lang="zh">棋子</span></h2>
+    </div>
+
+    <p data-lang="fr">Les pièces sont des <strong>demi-cercles</strong> identifiés par leur couleur et la forme gravée sur le dessus. Lorsqu'une pièce est placée, elle augmente la jauge associée. Le plateau accueille <strong>24 pièces</strong> au total — 4 de chaque type.</p>
+    <p data-lang="en">Pieces are <strong>half-circles</strong> identified by their color and the shape engraved on top. Placing a piece increases its associated gauge. The board holds <strong>24 pieces</strong> total — 4 of each type.</p>
+    <p data-lang="zh">棋子为<strong>半圆形</strong>，通过颜色和顶部雕刻的图案加以区分。放置棋子时，对应仪表增加。棋盘共容纳 <strong>24 个棋子</strong>——每种类型 4 个。</p>
+
+    <div class="pieces-grid">
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#7b3fa0"></div>
+        <div><div class="piece-label"><span data-lang="fr">Énergie</span><span data-lang="en">Energy</span><span data-lang="zh">能源</span></div><div class="piece-sym"><span data-lang="fr">Violet · Symbole : éclair</span><span data-lang="en">Purple · Symbol: lightning</span><span data-lang="zh">紫色 · 符号：闪电</span></div></div>
+        <div class="piece-arrow">→ Éco</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#6b3a1f"></div>
+        <div><div class="piece-label"><span data-lang="fr">Travail</span><span data-lang="en">Work</span><span data-lang="zh">劳动</span></div><div class="piece-sym"><span data-lang="fr">Marron · Symbole : engrenage</span><span data-lang="en">Brown · Symbol: gear</span><span data-lang="zh">棕色 · 符号：齿轮</span></div></div>
+        <div class="piece-arrow">→ Éco</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#d45a8a"></div>
+        <div><div class="piece-label"><span data-lang="fr">Divertissement</span><span data-lang="en">Entertainment</span><span data-lang="zh">娱乐</span></div><div class="piece-sym"><span data-lang="fr">Rose · Symbole : étoile</span><span data-lang="en">Pink · Symbol: star</span><span data-lang="zh">粉色 · 符号：星形</span></div></div>
+        <div class="piece-arrow">→ Soc</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#d4b800"></div>
+        <div><div class="piece-label"><span data-lang="fr">Logement</span><span data-lang="en">Housing</span><span data-lang="zh">住房</span></div><div class="piece-sym"><span data-lang="fr">Jaune · Symbole : toit</span><span data-lang="en">Yellow · Symbol: roof</span><span data-lang="zh">黄色 · 符号：屋顶</span></div></div>
+        <div class="piece-arrow">→ Soc</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#2d7a2d"></div>
+        <div><div class="piece-label"><span data-lang="fr">Espace Vert</span><span data-lang="en">Green Space</span><span data-lang="zh">绿地</span></div><div class="piece-sym"><span data-lang="fr">Vert · Symbole : collines</span><span data-lang="en">Green · Symbol: hills</span><span data-lang="zh">绿色 · 符号：山丘</span></div></div>
+        <div class="piece-arrow">→ Env</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#2a5aaa"></div>
+        <div><div class="piece-label"><span data-lang="fr">Eau</span><span data-lang="en">Water</span><span data-lang="zh">水</span></div><div class="piece-sym"><span data-lang="fr">Bleu · Symbole : cascade</span><span data-lang="en">Blue · Symbol: waterfall</span><span data-lang="zh">蓝色 · 符号：瀑布</span></div></div>
+        <div class="piece-arrow">→ Env</div>
+      </div>
+      <div class="piece-card">
+        <div class="piece-dot" style="background:#888;border-radius:50%"></div>
+        <div><div class="piece-label"><span data-lang="fr">Mobilité</span><span data-lang="en">Mobility</span><span data-lang="zh">交通</span></div><div class="piece-sym"><span data-lang="fr">Gris · Symbole : flèche</span><span data-lang="en">Grey · Symbol: arrow</span><span data-lang="zh">灰色 · 符号：箭头</span></div></div>
+        <div class="piece-arrow"><span data-lang="fr">Neutre</span><span data-lang="en">Neutral</span><span data-lang="zh">中立</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PAIRES ── -->
+<section id="paires">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">四</div>
+      <h2><span data-lang="fr">Les Paires &amp; Pôles</span><span data-lang="en">Pairs &amp; Poles</span><span data-lang="zh">组合与极点</span></h2>
+    </div>
+
+    <p data-lang="fr">Lorsque deux pièces compatibles sont placées côte à côte, elles forment un <strong>pôle</strong> qui modifie les jauges selon le tableau ci-dessous. Les 9 autres combinaisons sont neutres.</p>
+    <p data-lang="en">When two compatible pieces are placed side by side, they form a <strong>pole</strong> that modifies the gauges as shown below. The other 9 combinations are neutral.</p>
+    <p data-lang="zh">当两个兼容棋子相邻放置时，它们形成一个<strong>极点</strong>，按下表调整仪表。其余 9 种组合为中立。</p>
+
+    <table class="paires-table">
+      <thead>
+        <tr>
+          <th><span data-lang="fr">Paire</span><span data-lang="en">Pair</span><span data-lang="zh">组合</span></th>
+          <th><span data-lang="fr">Pôle</span><span data-lang="en">Pole</span><span data-lang="zh">极点</span></th>
+          <th><span data-lang="fr">Zone</span><span data-lang="en">Zone</span><span data-lang="zh">区域</span></th>
+          <th>Éco</th><th>Env</th><th>Soc</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span data-lang="fr">Énergie + Travail</span><span data-lang="en">Energy + Work</span><span data-lang="zh">能源 + 劳动</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Industrie</span><span data-lang="en">Industry</span><span data-lang="zh">工业</span></span></td>
+          <td><span class="zone-badge z-eco"><span data-lang="fr">Économique</span><span data-lang="en">Economic</span><span data-lang="zh">经济</span></span></td>
+          <td class="val-pos">+1</td><td class="val-neg">−1</td><td class="val-neg">−1</td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">Travail + Divertissement</span><span data-lang="en">Work + Entertainment</span><span data-lang="zh">劳动 + 娱乐</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Opportunité</span><span data-lang="en">Opportunity</span><span data-lang="zh">机遇</span></span></td>
+          <td><span class="zone-badge z-mix"><span data-lang="fr">Équitable</span><span data-lang="en">Equitable</span><span data-lang="zh">公平</span></span></td>
+          <td class="val-pos">+1</td><td class="val-neg">−1</td><td class="val-pos">+1</td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">Divertissement + Logement</span><span data-lang="en">Entertainment + Housing</span><span data-lang="zh">娱乐 + 住房</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Communauté</span><span data-lang="en">Community</span><span data-lang="zh">社区</span></span></td>
+          <td><span class="zone-badge z-soc"><span data-lang="fr">Sociale</span><span data-lang="en">Social</span><span data-lang="zh">社会</span></span></td>
+          <td class="val-neg">−1</td><td class="val-neg">−1</td><td class="val-pos">+1</td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">Logement + Espace Vert</span><span data-lang="en">Housing + Green Space</span><span data-lang="zh">住房 + 绿地</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Bien-être</span><span data-lang="en">Well-being</span><span data-lang="zh">幸福</span></span></td>
+          <td><span class="zone-badge z-mix"><span data-lang="fr">Vivable</span><span data-lang="en">Livable</span><span data-lang="zh">宜居</span></span></td>
+          <td class="val-neg">−1</td><td class="val-pos">+1</td><td class="val-pos">+1</td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">Espace Vert + Eau</span><span data-lang="en">Green Space + Water</span><span data-lang="zh">绿地 + 水</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Écosystème</span><span data-lang="en">Ecosystem</span><span data-lang="zh">生态系统</span></span></td>
+          <td><span class="zone-badge z-env"><span data-lang="fr">Environnementale</span><span data-lang="en">Environmental</span><span data-lang="zh">环境</span></span></td>
+          <td class="val-neg">−1</td><td class="val-pos">+1</td><td class="val-neg">−1</td>
+        </tr>
+        <tr>
+          <td><span data-lang="fr">Eau + Énergie</span><span data-lang="en">Water + Energy</span><span data-lang="zh">水 + 能源</span></td>
+          <td><span class="pole-name"><span data-lang="fr">Ressources</span><span data-lang="en">Resources</span><span data-lang="zh">资源</span></span></td>
+          <td><span class="zone-badge z-mix"><span data-lang="fr">Viable</span><span data-lang="en">Viable</span><span data-lang="zh">可行</span></span></td>
+          <td class="val-pos">+1</td><td class="val-pos">+1</td><td class="val-neg">−1</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.8rem;color:var(--muted);font-style:italic;">
+      <span data-lang="fr">3 paires rentables · 3 paires non rentables · 9 paires neutres</span>
+      <span data-lang="en">3 beneficial pairs · 3 harmful pairs · 9 neutral pairs</span>
+      <span data-lang="zh">3 个有利组合 · 3 个有害组合 · 9 个中立组合</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── DEROULEMENT ── -->
+<section id="deroulement">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">五</div>
+      <h2><span data-lang="fr">Déroulement d'une Partie</span><span data-lang="en">Game Flow</span><span data-lang="zh">游戏流程</span></h2>
+    </div>
+
+    <p data-lang="fr">Une partie dure <strong>12 tours</strong>. À chaque tour, <strong>un joueur joue</strong> puis un événement est déclenché automatiquement par le système. Pour passer au tour suivant, le joueur actif <strong>appuie sur le bouton</strong> situé sur le plateau. L'événement du tour est tiré aléatoirement par le code embarqué selon la saison en cours, et son numéro est affiché sur le petit écran du plateau. Le joueur cherche alors la carte correspondante dans le jeu de cartes physique.</p>
+    <p data-lang="en">A game lasts <strong>12 rounds</strong>. Each round, <strong>one player acts</strong>, then an event is automatically triggered by the system. To advance to the next round, the active player <strong>presses the button</strong> on the board. The event is randomly drawn by the embedded code based on the current season, and its number is displayed on the board's small screen. The player then finds the matching card in the physical card deck.</p>
+    <p data-lang="zh">一局游戏持续 <strong>12 回合</strong>。每回合，<strong>一名玩家行动</strong>，随后系统自动触发一个事件。进入下一回合需要当前玩家<strong>按下棋盘上的按钮</strong>。嵌入代码根据当前季节随机抽取事件，其编号显示在棋盘小屏幕上。玩家随后在实体卡组中找到对应卡片。</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(175px,1fr)); gap:0.65rem; margin:1.2rem 0;">
+      <div class="box">
+        <div class="box-title"><span data-lang="fr">Structure</span><span data-lang="en">Structure</span><span data-lang="zh">结构</span></div>
+        <span data-lang="fr">12 tours · 1 joueur par tour · 1 événement par tour</span>
+        <span data-lang="en">12 rounds · 1 player per round · 1 event per round</span>
+        <span data-lang="zh">12 回合 · 每回合 1 名玩家 · 每回合 1 个事件</span>
+      </div>
+      <div class="box box-gold">
+        <div class="box-title"><span data-lang="fr">Bouton du plateau</span><span data-lang="en">Board button</span><span data-lang="zh">棋盘按钮</span></div>
+        <span data-lang="fr">Appuyer pour valider le tour et déclencher l'événement suivant</span>
+        <span data-lang="en">Press to validate the turn and trigger the next event</span>
+        <span data-lang="zh">按下以确认回合并触发下一个事件</span>
+      </div>
+      <div class="box">
+        <div class="box-title"><span data-lang="fr">Événements</span><span data-lang="en">Events</span><span data-lang="zh">事件</span></div>
+        <span data-lang="fr">Tirés selon la saison + génériques, non répétables, affichés sur l'écran du plateau</span>
+        <span data-lang="en">Drawn by season + generics, non-repeatable, displayed on the board screen</span>
+        <span data-lang="zh">按季节抽取 + 通用事件，不重复，显示在棋盘屏幕上</span>
+      </div>
+    </div>
+
+    <h3><span data-lang="fr">Boucle d'un tour</span><span data-lang="en">Turn loop</span><span data-lang="zh">回合循环</span></h3>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-title"><span data-lang="fr">Chronos</span><span data-lang="en">Chronos</span><span data-lang="zh">消耗</span></div>
+        <div class="phase-sub"><span data-lang="fr">−1 sur la jauge la plus haute</span><span data-lang="en">−1 on the highest gauge</span><span data-lang="zh">最高仪表 −1</span></div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-title"><span data-lang="fr">Action</span><span data-lang="en">Action</span><span data-lang="zh">行动</span></div>
+        <div class="phase-sub"><span data-lang="fr">Le joueur actif effectue son action</span><span data-lang="en">The active player takes their action</span><span data-lang="zh">当前玩家执行行动</span></div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-title"><span data-lang="fr">Bouton</span><span data-lang="en">Button</span><span data-lang="zh">按钮</span></div>
+        <div class="phase-sub"><span data-lang="fr">Appui sur le bouton → numéro d'événement affiché sur l'écran</span><span data-lang="en">Press the button → event number shown on screen</span><span data-lang="zh">按下按钮 → 屏幕显示事件编号</span></div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <div class="phase-title"><span data-lang="fr">Événement</span><span data-lang="en">Event</span><span data-lang="zh">事件</span></div>
+        <div class="phase-sub"><span data-lang="fr">Le joueur trouve la carte et applique ses effets</span><span data-lang="en">Player finds the card and applies its effects</span><span data-lang="zh">玩家找到卡片并应用其效果</span></div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">5</div>
+        <div class="phase-title"><span data-lang="fr">Feedback</span><span data-lang="en">Feedback</span><span data-lang="zh">反馈</span></div>
+        <div class="phase-sub"><span data-lang="fr">Jauges &amp; LEDs mis à jour · Joueur suivant</span><span data-lang="en">Gauges &amp; LEDs updated · Next player</span><span data-lang="zh">仪表与 LED 更新 · 下一位玩家</span></div>
+      </div>
+    </div>
+
+    <div class="box box-gold">
+      <div class="box-title">🖥 <span data-lang="fr">Système d'Événements IoT</span><span data-lang="en">IoT Event System</span><span data-lang="zh">物联网事件系统</span></div>
+      <p data-lang="fr" style="margin:0">Le code embarqué tire aléatoirement un numéro d'événement en fonction de la saison en cours (printemps, été, automne, hiver) et des événements génériques. Le numéro apparaît sur le petit écran intégré au plateau. Aucun événement ne se répète au cours d'une partie.</p>
+      <p data-lang="en" style="margin:0">The embedded code randomly draws an event number based on the current season (spring, summer, autumn, winter) and generic events. The number appears on the small screen built into the board. No event repeats during a game.</p>
+      <p data-lang="zh" style="margin:0">嵌入代码根据当前季节（春、夏、秋、冬）和通用事件随机抽取事件编号。编号显示在棋盘内置小屏幕上。一局游戏中每个事件只出现一次。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIONS ── -->
+<section id="actions">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">六</div>
+      <h2><span data-lang="fr">Les Actions</span><span data-lang="en">The Actions</span><span data-lang="zh">行动</span></h2>
+    </div>
+
+    <p data-lang="fr">À son tour, chaque joueur choisit <strong>une seule action</strong> parmi les suivantes :</p>
+    <p data-lang="en">On their turn, each player chooses <strong>one single action</strong> from the following:</p>
+    <p data-lang="zh">轮到自己时，每位玩家从以下选项中选择<strong>一项行动</strong>：</p>
+
+    <div class="actions-grid">
+      <div class="action-card">
+        <div class="action-num">1</div>
+        <div class="action-title">🏙 <span data-lang="fr">Urbanisme</span><span data-lang="en">Urban Planning</span><span data-lang="zh">城市规划</span></div>
+        <div class="action-desc"><span data-lang="fr">Poser un demi-cercle sur un emplacement vide du plateau.</span><span data-lang="en">Place a half-circle on an empty spot on the board.</span><span data-lang="zh">将半圆形棋子放置在棋盘的空位上。</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">2</div>
+        <div class="action-title">🔗 <span data-lang="fr">Ingénierie</span><span data-lang="en">Engineering</span><span data-lang="zh">工程</span></div>
+        <div class="action-desc"><span data-lang="fr">Poser jusqu'à 2 passerelles pour relier des blocs.</span><span data-lang="en">Place up to 2 bridges to connect blocks.</span><span data-lang="zh">放置最多 2 座桥梁以连接积木。</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">3</div>
+        <div class="action-title">🔄 <span data-lang="fr">Mobilité</span><span data-lang="en">Mobility</span><span data-lang="zh">流动性</span></div>
+        <div class="action-desc"><span data-lang="fr">Échanger deux blocs adjacents ou déplacer un bloc vers un emplacement vide. Coût : −1 Éco ou −1 Soc.</span><span data-lang="en">Swap two adjacent blocks or move one block to an empty spot. Cost: −1 Eco or −1 Soc.</span><span data-lang="zh">交换两个相邻积木或将一个积木移至空位。代价：−1 经或 −1 社。</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">4</div>
+        <div class="action-title">⏸ <span data-lang="fr">Passer</span><span data-lang="en">Pass</span><span data-lang="zh">跳过</span></div>
+        <div class="action-desc"><span data-lang="fr">Ne rien faire ce tour. Permet d'observer l'évolution des jauges avant d'agir.</span><span data-lang="en">Do nothing this turn. Allows observing gauge changes before acting.</span><span data-lang="zh">本回合不行动。可观察仪表变化后再决策。</span></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-title"><span data-lang="fr">Règle de Mobilité</span><span data-lang="en">Mobility Rule</span><span data-lang="zh">流动性规则</span></div>
+      <p data-lang="fr" style="margin:0">On ne peut pas échanger deux blocs si des passerelles y sont branchées. Il faut d'abord retirer les passerelles (action Ingénierie). L'échange déclenche un malus immédiat — c'est un <em>dernier recours stratégique</em>.</p>
+      <p data-lang="en" style="margin:0">You cannot swap two blocks if bridges are connected to them. You must first remove the bridges (Engineering action). The swap triggers an immediate penalty — it is a <em>strategic last resort</em>.</p>
+      <p data-lang="zh" style="margin:0">若积木连接了桥梁，则无法交换。必须先移除桥梁（工程行动）。交换会立即触发惩罚——这是<em>最后的战略手段</em>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── EVENEMENTS ── -->
+<section id="evenements">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">七</div>
+      <h2><span data-lang="fr">Les Événements</span><span data-lang="en">The Events</span><span data-lang="zh">事件</span></h2>
+    </div>
+
+    <p data-lang="fr">12 cartes événements non répétables. Chaque saison contribue 2 cartes + 4 génériques. Les effets sont équilibrés : autant de bonus que de malus sur l'ensemble du deck.</p>
+    <p data-lang="en">12 non-repeatable event cards. Each season contributes 2 cards + 4 generic cards. Effects are balanced: as many bonuses as penalties across the full deck.</p>
+    <p data-lang="zh">12 张不重复事件卡。每个季节贡献 2 张 + 4 张通用卡。效果均衡：整副牌中奖励与惩罚数量相同。</p>
+
+    <div class="divider">
+      <span data-lang="fr">— Cartes Génériques —</span>
+      <span data-lang="en">— Generic Cards —</span>
+      <span data-lang="zh">— 通用卡 —</span>
+    </div>
+    <div class="evt-cards">
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">01</div><div class="evt-title"><span data-lang="fr">Évaluation environnementale annuelle</span><span data-lang="en">Annual Environmental Assessment</span><span data-lang="zh">年度环境评估</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Des experts évaluent la ville. Bonnes pratiques récompensées, partenaires rassurés, mais les nouvelles normes perturbent les habitants.</span><span data-lang="en">Experts assess the city. Good practices rewarded, partners reassured, but new regulations unsettle residents.</span><span data-lang="zh">专家评估城市。良好做法获得奖励，合作伙伴得到安抚，但新规范让居民不安。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 +2 Éco</span><span class="eff eff-soc">👥 −1 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">02</div><div class="evt-title"><span data-lang="fr">Cyberattaque</span><span data-lang="en">Cyberattack</span><span data-lang="zh">网络攻击</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Le réseau énergétique est piraté. Les services ralentissent et la population s'inquiète pour la sécurité de la ville.</span><span data-lang="en">The energy network is hacked. Services slow down and residents worry about city security.</span><span data-lang="zh">能源网络遭到黑客攻击。服务减慢，居民对城市安全感到担忧。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 −2 Éco</span><span class="eff eff-env">🌿 −1 Env</span><span class="eff eff-soc">👥 −1 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">03</div><div class="evt-title"><span data-lang="fr">Campagne d'inclusion numérique</span><span data-lang="en">Digital Inclusion Campaign</span><span data-lang="zh">数字融合运动</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Une campagne accompagne les habitants éloignés du numérique et améliore l'accès aux services, au coût de ressources techniques.</span><span data-lang="en">A campaign supports digitally excluded residents and improves service access, at the cost of technical resources.</span><span data-lang="zh">一项运动支持数字边缘化居民，改善服务获取，但需消耗技术资源。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 −1 Éco</span><span class="eff eff-env">🌿 −1 Env</span><span class="eff eff-soc">👥 +2 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">04</div><div class="evt-title"><span data-lang="fr">Modernisation des infrastructures</span><span data-lang="en">Infrastructure Modernisation</span><span data-lang="zh">基础设施现代化</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Un grand chantier de rénovation est lancé. Nuisances environnementales, mais emplois créés et fierté locale.</span><span data-lang="en">A major renovation project is launched. Environmental disruption, but jobs are created and local pride grows.</span><span data-lang="zh">大规模翻新项目启动。带来环境干扰，但创造了就业机会并增强了本地自豪感。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 +1 Éco</span><span class="eff eff-env">🌿 −2 Env</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">— 🌸 <span data-lang="fr">Printemps</span><span data-lang="en">Spring</span><span data-lang="zh">春季</span> —</div>
+    <div class="evt-cards">
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">05</div><div class="evt-title"><span data-lang="fr">Ruches urbaines</span><span data-lang="en">Urban Beehives</span><span data-lang="zh">城市蜂巢</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Des ruches s'installent sur les toits. La pollinisation locale s'améliore et les habitants se sentent plus proches de leur environnement.</span><span data-lang="en">Beehives are installed on rooftops. Local pollination improves and residents feel closer to their environment.</span><span data-lang="zh">屋顶安装了蜂巢。当地授粉改善，居民与环境更加亲近。</span></div>
+          <div class="evt-effects"><span class="eff eff-env">🌿 +2 Env</span><span class="eff eff-soc">👥 +1 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">06</div><div class="evt-title"><span data-lang="fr">Pluies torrentielles</span><span data-lang="en">Torrential Rain</span><span data-lang="zh">暴雨</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">De violentes averses s'abattent sur la ville, saturant les sols et perturbant les écosystèmes, mais suscitant une entraide spontanée.</span><span data-lang="en">Heavy downpours sweep the city, saturating the ground and disrupting ecosystems, but sparking community support.</span><span data-lang="zh">暴雨袭击城市，土壤饱和，生态系统受扰，但激发了自发的互助精神。</span></div>
+          <div class="evt-effects"><span class="eff eff-env">🌿 −2 Env</span><span class="eff eff-soc">👥 +1 Soc</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">— ☀️ <span data-lang="fr">Été</span><span data-lang="en">Summer</span><span data-lang="zh">夏季</span> —</div>
+    <div class="evt-cards">
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">07</div><div class="evt-title"><span data-lang="fr">Récolte solaire</span><span data-lang="en">Solar Power Generation</span><span data-lang="zh">太阳能发电</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Les panneaux tournent à plein régime. L'énergie produite soutient l'économie et réduit les émissions.</span><span data-lang="en">Solar panels work at full capacity. The energy produced boosts the economy and reduces emissions.</span><span data-lang="zh">太阳能板满负荷运行。产生的能量促进经济并减少排放。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 +1 Éco</span><span class="eff eff-env">🌿 +2 Env</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">08</div><div class="evt-title"><span data-lang="fr">Canicule extrême</span><span data-lang="en">Extreme Heatwave</span><span data-lang="zh">极端热浪</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">La chaleur écrasante fragilise les écosystèmes, plombe les finances et isole les plus vulnérables. Les tensions montent.</span><span data-lang="en">Sweltering heat damages ecosystems, strains finances and isolates the most vulnerable. Tensions between residents are rising.</span><span data-lang="zh">酷热损害生态系统，拖累财政，孤立最脆弱的群体。居民间紧张局势上升。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 −1 Éco</span><span class="eff eff-env">🌿 −2 Env</span><span class="eff eff-soc">👥 −2 Soc</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">— 🍂 <span data-lang="fr">Automne</span><span data-lang="en">Autumn</span><span data-lang="zh">秋季</span> —</div>
+    <div class="evt-cards">
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">09</div><div class="evt-title"><span data-lang="fr">Foire artisanale</span><span data-lang="en">Craft Fair</span><span data-lang="zh">手工艺集市</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Les artisans locaux exposent dans les rues. L'économie locale est dynamisée, la foire crée un fort sentiment de communauté malgré les embouteillages.</span><span data-lang="en">The fair brings together craftspeople and visitors, gives a significant boost to the local economy and creates a great sense of community, despite the traffic jams caused by the influx of vehicles.</span><span data-lang="zh">集市汇聚工匠与访客，大力提振当地经济，尽管车辆涌入造成交通拥堵，但创造了强烈的社区归属感。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 +2 Éco</span><span class="eff eff-env">🌿 −1 Env</span><span class="eff eff-soc">👥 +1 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">10</div><div class="evt-title"><span data-lang="fr">Tempêtes d'automne</span><span data-lang="en">Autumn Storms</span><span data-lang="zh">秋季风暴</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Vent et pluie frappent fort. Les milieux naturels encaissent, mais les habitants développent une solidarité face aux intempéries.</span><span data-lang="en">Wind and rain strike hard. Natural environments take a hit, but residents develop solidarity in the face of bad weather.</span><span data-lang="zh">狂风暴雨猛烈来袭。自然环境受到冲击，但居民在恶劣天气中培养了团结互助的精神。</span></div>
+          <div class="evt-effects"><span class="eff eff-env">🌿 −2 Env</span><span class="eff eff-soc">👥 +1 Soc</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">— ❄️ <span data-lang="fr">Hiver</span><span data-lang="en">Winter</span><span data-lang="zh">冬季</span> —</div>
+    <div class="evt-cards">
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">11</div><div class="evt-title"><span data-lang="fr">Entraide citoyenne</span><span data-lang="en">Community Solidarity</span><span data-lang="zh">市民互助</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Courses, covoiturage, partage de ressources. La solidarité réduit les déplacements inutiles et renforce le tissu social.</span><span data-lang="en">Errands, carpooling, resource sharing. Solidarity reduces unnecessary travel and strengthens social bonds.</span><span data-lang="zh">跑腿、拼车、资源共享。团结互助减少了不必要的出行，加强了社会纽带。</span></div>
+          <div class="evt-effects"><span class="eff eff-env">🌿 +2 Env</span><span class="eff eff-soc">👥 +1 Soc</span></div>
+        </div>
+      </div>
+      <div class="evt-card">
+        <div class="evt-card-header"><div class="evt-num">12</div><div class="evt-title"><span data-lang="fr">Gel des canalisations</span><span data-lang="en">Frozen Pipes</span><span data-lang="zh">管道结冰</span></div></div>
+        <div class="evt-card-body">
+          <div class="evt-desc"><span data-lang="fr">Les canalisations gèlent. Les équipes techniques interviennent en urgence — activité économique mais perturbation du quotidien des habitants.</span><span data-lang="en">Pipes freeze. Technical teams intervene urgently — economic activity but disruption to residents' daily lives.</span><span data-lang="zh">管道结冰。技术团队紧急介入——带来经济活动，但干扰了居民的日常生活。</span></div>
+          <div class="evt-effects"><span class="eff eff-eco">💰 +2 Éco</span><span class="eff eff-env">🌿 −1 Env</span><span class="eff eff-soc">👥 −1 Soc</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VICTOIRE ── -->
+<section id="victoire">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">八</div>
+      <h2><span data-lang="fr">Conditions de Victoire</span><span data-lang="en">Victory Conditions</span><span data-lang="zh">胜利条件</span></h2>
+    </div>
+
+    <p data-lang="fr">La ville survit si aucune des trois jauges secondaires ne tombe à <strong>zéro ou en dessous de 3</strong> pendant les 12 tours. La victoire est collective.</p>
+    <p data-lang="en">The city survives if none of the three secondary gauges falls to <strong>zero or below 3</strong> during the 12 rounds. Victory is collective.</p>
+    <p data-lang="zh">如果在 12 回合中没有任何二级仪表降至<strong>零或低于 3</strong>，城市得以存活。胜利是集体的。</p>
+
+    <div class="win-box">
+      <div>❧</div>
+      <div class="win-formula">D = 2 × ³√( <span class="eco">Éco</span> × <span class="env">Env</span> × <span class="soc">Soc</span> )</div>
+      <div class="win-note">
+        <span data-lang="fr">Si une jauge s'effondre à 0, la ville s'éteint — défaite commune immédiate.</span>
+        <span data-lang="en">If a gauge collapses to 0, the city shuts down — immediate collective defeat.</span>
+        <span data-lang="zh">若任一仪表归零，城市熄灭——立即共同失败。</span>
+      </div>
+      <div style="margin-top:0.5rem">❧</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:0.65rem; margin-top:1.4rem;">
+      <div class="box" style="border-left-color:#2d7a2d">
+        <div class="box-title" style="color:#2d7a2d">
+          <span data-lang="fr">✦ Victoire parfaite</span><span data-lang="en">✦ Perfect victory</span><span data-lang="zh">✦ 完美胜利</span>
+        </div>
+        <span data-lang="fr">Atteindre au moins <strong>9 tours sur 12</strong> avec toutes les jauges ≥ 3</span>
+        <span data-lang="en">Reach at least <strong>9 out of 12 rounds</strong> with all gauges ≥ 3</span>
+        <span data-lang="zh">在至少 <strong>12 回合中的 9 回合</strong>内所有仪表保持 ≥ 3</span>
+      </div>
+      <div class="box" style="border-left-color:#d4a017">
+        <div class="box-title" style="color:#d4a017">
+          <span data-lang="fr">~ Survie</span><span data-lang="en">~ Survival</span><span data-lang="zh">~ 生存</span>
+        </div>
+        <span data-lang="fr">Finir les 12 tours sans qu'aucune jauge ne tombe à 0</span>
+        <span data-lang="en">Finish all 12 rounds without any gauge reaching 0</span>
+        <span data-lang="zh">完成 12 回合而无仪表归零</span>
+      </div>
+      <div class="box" style="border-left-color:#8b1a1a">
+        <div class="box-title" style="color:#8b1a1a">
+          <span data-lang="fr">✗ Défaite</span><span data-lang="en">✗ Defeat</span><span data-lang="zh">✗ 失败</span>
+        </div>
+        <span data-lang="fr">Une jauge atteint 0 ou passe en dessous de 3 — la ville s'effondre, la partie s'arrête</span>
+        <span data-lang="en">A gauge reaches 0 or falls below 3 — the city collapses, the game ends</span>
+        <span data-lang="zh">任一仪表归零或低于 3——城市崩溃，游戏结束</span>
+      </div>
+    </div>
+
+    <h3><span data-lang="fr">Signal lumineux de fin</span><span data-lang="en">End light signal</span><span data-lang="zh">结束灯光信号</span></h3>
+    <p data-lang="fr">Le bandeau de LEDs autour du plateau s'illumine selon l'issue : <span style="color:#2d7a2d;font-weight:600">vert</span> pour la victoire parfaite, <span style="color:#d4a017;font-weight:600">jaune</span> pour la survie, <span style="color:#8b1a1a;font-weight:600">rouge</span> pour la défaite. Un QR code est généré en fin de partie, récapitulant le déroulé, les erreurs et l'espérance de vie de la ville construite.</p>
+    <p data-lang="en">The LED strip around the board lights up according to the outcome: <span style="color:#2d7a2d;font-weight:600">green</span> for perfect victory, <span style="color:#d4a017;font-weight:600">yellow</span> for survival, <span style="color:#8b1a1a;font-weight:600">red</span> for defeat. A QR code is generated at the end summarising the game, mistakes, and the city's life expectancy.</p>
+    <p data-lang="zh">棋盘周围的 LED 灯带根据结果亮起：完美胜利亮<span style="color:#2d7a2d;font-weight:600">绿色</span>，生存亮<span style="color:#d4a017;font-weight:600">黄色</span>，失败亮<span style="color:#8b1a1a;font-weight:600">红色</span>。游戏结束后生成二维码，概述游戏过程、错误及所建城市的预期寿命。</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-title">Ethicity</div>
+  <p>ArtGame · Team 21 · SECD — Sustainable Environments through City Development</p>
+  <p style="margin-top:0.4rem">Noah Sarniguet · Léo Courbet · Hamza Refae · Eléonor Eude · Clémentine Bodin</p>
+  <div style="margin-top:0.9rem;font-size:0.72rem;opacity:0.65">ODD 11 · 12 · 17 — Villes durables · Consommation responsable · Partenariats</div>
+</footer>
+
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    const map = { fr: 'Français', en: 'English', zh: '中文' };
+    b.classList.toggle('active', b.textContent.trim() === map[lang]);
+  });
+  document.documentElement.lang = lang === 'zh' ? 'zh' : lang;
+}
+</script>
+</body>
+</html>
